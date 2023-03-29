@@ -1,15 +1,37 @@
 const express = require('express');
-const app = express();
 const path = require('path');
+const mongoose = require('mongoose');
+const Attraction = require('./models/attraction');
 
-app.set('view engine', 'ejs')
-app.set('views',path.join(__dirname,'views'))
+
+mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
+    .then(() => {
+    console.log('CONNECTION OK')
+    })
+    .catch(error => {
+        console.log("CONNECTION FAILED!")
+        console.log(error)
+})
+ 
+
+const app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => {
-    res.render('home')
+    res.render('home');
+})
+
+//just to test the connection
+
+app.get('/createattraction', async (req, res) => {
+    const attraction = new Attraction({ title: 'Palace Of Culture', fee: '20' });
+    await attraction.save();
+    res.send(attraction)
 })
 
 app.listen(3000, () => {
-    console.log('Serving on port 3000')
+    console.log('Serving on port 3000');
 })
 
