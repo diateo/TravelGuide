@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const AttractionSchema = new Schema({
-    title: String,
+    name: String,
     fee: String,
     location: String,
     description: String,
