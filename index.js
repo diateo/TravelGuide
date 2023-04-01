@@ -19,6 +19,9 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+//parse the body
+app.use(express.urlencoded({extended:true}))
+
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -28,6 +31,17 @@ app.get('/', (req, res) => {
 app.get('/attractions', async (req, res) => {
     const attractions = await Attraction.find({});
     res.render('attractions/index',{attractions});
+})
+
+//this route needs to be before show so new will not be treated as id
+app.get('/attractions/new', (req, res) => {
+    res.render('attractions/new');
+})
+
+app.post('/attractions', async (req, res) => {
+    const attraction = new Attraction(req.body.attraction);
+    await attraction.save();
+    res.redirect(`/attractions/${attraction._id}`)
 })
 
 app.get('/attractions/:id', async (req, res) => {
