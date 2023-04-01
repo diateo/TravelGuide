@@ -13,7 +13,9 @@
     <ul>
         <% for (let attraction of attractions) { %>
             <li>
-                <%= attraction.name%>
+                <a href="attractions/<%= attraction._id %>">
+                    <%= attraction.name%>
+                </a>
             </li>
 
             <%}%>
