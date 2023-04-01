@@ -19,17 +19,17 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+
 app.get('/', (req, res) => {
     res.render('home');
 })
 
-//just to test the connection
 
-app.get('/createattraction', async (req, res) => {
-    const attraction = new Attraction({ title: 'Palace Of Culture', fee: '20' });
-    await attraction.save();
-    res.send(attraction)
+app.get('/attractions', async (req, res) => {
+    const attractions = await Attraction.find({});
+    res.render('attractions/index',{attractions});
 })
+
 
 app.listen(3000, () => {
     console.log('Serving on port 3000');
