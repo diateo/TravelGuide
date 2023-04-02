@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 const Attraction = require('./models/attraction');
 
 
@@ -20,7 +21,9 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 //parse the body
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }));
+//because the browser form doesn't support PUT/PATCH/DELETE
+app.use(methodOverride('_method'));
 
 
 app.get('/', (req, res) => {
@@ -49,6 +52,15 @@ app.get('/attractions/:id', async (req, res) => {
     res.render('attractions/show',{attraction});
 })
 
+app.get('/attractions/:id/edit', async (req, res) => {
+    const attraction = await Attraction.findById(req.params.id);
+    res.render('attractions/edit',{attraction});
+})
+
+app.put('/attractions/:id', async (req, res) => {
+    const attraction = await Attraction.findByIdAndUpdate(req.params.id, { ...req.body.attraction });
+    res.redirect(`/attractions/${attraction._id}`);
+})
 
 
 app.listen(3000, () => {
