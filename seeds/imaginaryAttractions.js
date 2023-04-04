@@ -22,8 +22,7 @@ module.exports.places = [
     'Lake',
     'Waterfall',
     'Desert',
-    'Museum',
-    'Church',
+    'Temple',
     'Cave',
     'Beach',
     'Citadel',
@@ -31,5 +30,13 @@ module.exports.places = [
     'Resort',
     'Monastery',
     'Castle',
-    'Theater'
+    'Field',
+    'River',
+    'Garden',
+    'Statue',
+    'Village',
+    'Cliff',
+    'Monument',
+    'Bridge'
+    
 ]
