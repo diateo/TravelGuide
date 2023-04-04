@@ -19,9 +19,14 @@ const populateDB = async () => {
     await Attraction.deleteMany({});
     for (let i = 0; i < 50; i++) {
         const randomCity = Math.floor(Math.random() * 800);
+        const fee = Math.floor(Math.random() * 30) + 10;
         const attraction = new Attraction({
             location: `${cities[randomCity].city}, ${cities[randomCity].county}`,
-            name:`${randomSeed(adjectives)} ${randomSeed(places)}`
+            name: `${randomSeed(adjectives)} ${randomSeed(places)}`,
+            image: 'https://source.unsplash.com/collection/1376658',
+            description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusamus vitae omnis officiis praesentium a consequuntur perspiciatis nesciunt officia hic non ipsum voluptatum saepe magnam necessitatibus suscipit doloribus quae, quaerat quos! Fugit impedit ipsam eveniet odio exercitationem inventore porro facilis temporibus! Praesentium, inventore autem error delectus, atque consequatur accusamus cupiditate obcaecati veritatis ullam aperiam nisi ratione, in odio iste quisquam soluta? Incidunt quia exercitationem est dolore totam?',
+            fee
+            
         });
         await attraction.save();
     }
