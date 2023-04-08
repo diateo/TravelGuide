@@ -1,14 +1,43 @@
 <% layout('layouts/boilerplate')%>
-    <h1>Edit Attraction</h1>
-    <form action="/attractions/<%=attraction._id%>?_method=PUT" method="POST">
-        <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" name="attraction[name]" value="<%=attraction.name%>">
+
+    <div class="row">
+        <h1 class="text-center">Edit Attraction</h1>
+        <div class="col-6 offset-3">
+            <form action="/attractions/<%=attraction._id%>?_method=PUT" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="attraction[name]"
+                        value="<%=attraction.name%>">
+                </div>
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="location" name="attraction[location]"
+                        value="<%=attraction.location%>">
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image URL</label>
+                    <input type="text" class="form-control" id="image" name="attraction[image]"
+                        value="<%=attraction.image%>">
+                </div>
+                <div class="mb-3">
+                    <label for="fee" class="form-label">Fee</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="fee-label">$</span>
+                        <input type="text" class="form-control" id="fee" aria-label="fee" name="attraction[fee]"
+                            value="<%=attraction.fee%>" aria-describedby="fee-label">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description"
+                        name="attraction[description]"><%=attraction.description%></textarea>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-info">Update Attraction</button>
+                </div>
+
+            </form>
+            <a href="/attractions/<%=attraction._id%>">Back to Attraction</a>
         </div>
-        <div>
-            <label for="location">Location</label>
-            <input type="text" id="location" name="attraction[location]" value="<%=attraction.location%>">
-        </div>
-        <button>Update Attraction</button>
-    </form>
-    <a href="/attractions/<%=attraction._id%>">Back to attraction</a>
+
+    </div>
