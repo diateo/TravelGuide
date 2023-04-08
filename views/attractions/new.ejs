@@ -3,30 +3,46 @@
     <div class="row">
         <h1 class="text-center">New Attraction</h1>
         <div class="col-6 offset-3">
-            <form action="/attractions" method="POST">
+            <form action="/attractions" method="POST" novalidate class="requires-validation">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="attraction[name]">
+                    <input type="text" class="form-control" id="name" name="attraction[name]" required>
+                    <div class="valid-feedback">
+                        Nice!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
-                    <input type="text" class="form-control" id="location" name="attraction[location]">
+                    <input type="text" class="form-control" id="location" name="attraction[location]" required>
+                    <div class="valid-feedback">
+                        Nice!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Image URL</label>
-                    <input type="text" class="form-control" id="image" name="attraction[image]">
+                    <input type="text" class="form-control" id="image" name="attraction[image]" required>
+                    <div class="valid-feedback">
+                        Nice!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="fee" class="form-label">Fee</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="fee-label">$</span>
                         <input type="text" class="form-control" id="fee" aria-label="fee" name="attraction[fee]"
-                            aria-describedby="fee-label">
+                            required aria-describedby="fee-label">
+                        <div class="valid-feedback">
+                            Nice!
+                        </div>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" name="attraction[description]" rows="3"></textarea>
+                    <textarea class="form-control" id="description" name="attraction[description]" required
+                        rows="3"></textarea>
+                    <div class="valid-feedback">
+                        Nice!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Add Attraction</button>
