@@ -1,22 +1,30 @@
 <% layout('layouts/boilerplate')%>
-    <h1>
-        <%=attraction.name%>
-    </h1>
-    <h2>
-        <%=attraction.location%>
-    </h2>
-    <img src="<%=attraction.image%>">
-    <p>
-        <%=attraction.description%>
-    </p>
-    <div>
-        <a href="/attractions/<%=attraction._id%>/edit">Edit</a>
+
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card mb-3">
+                <img src="<%=attraction.image%>" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%=attraction.name%>
+                    </h5>
+                    <p class="card-text">
+                        <%=attraction.description%>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-muted">
+                        <%=attraction.location%>
+                    </li>
+                    <li class="list-group-item">Entrance fee: <%=attraction.fee%> lei
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <a href="/attractions/<%=attraction._id%>/edit" class="card-link btn btn-primary">Edit</a>
+                    <form class="d-inline" action="/attractions/<%=attraction._id%>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <form action="/attractions/<%=attraction._id%>?_method=DELETE" method="POST">
-            <button>Delete</button>
-        </form>
-    </div>
-    <footer>
-        <a href="/attractions">All Attractions</a>
-    </footer>
