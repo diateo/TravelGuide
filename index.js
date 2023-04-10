@@ -6,6 +6,7 @@ const methodOverride = require('method-override');
 const Attraction = require('./models/attraction');
 const expressError = require('./utilities/ExpressError');
 const catchAsync = require('./utilities/catchAsync');
+const ExpressError = require('./utilities/ExpressError');
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
@@ -46,6 +47,7 @@ app.get('/attractions/new', (req, res) => {
 })
 
 app.post('/attractions', catchAsync(async (req, res) => {
+    if (!req.body.attraction) throw new ExpressError(400, 'Invalid data');
     const attraction = new Attraction(req.body.attraction);
     await attraction.save();
     res.redirect(`/attractions/${attraction._id}`)
@@ -71,8 +73,14 @@ app.delete('/attractions/:id', catchAsync(async (req, res) => {
     res.redirect('/attractions')
 }))
 
-app.use((err, req, res, next)=> {
-    res.send('Something went wrong!!!')
+
+app.all('*', (req, res, next) => {
+    next(new ExpressError(404, 'Page not found'));
+})
+
+app.use((err, req, res, next) => {
+    const { statusCode = 500, message = 'Something went wrong' } = err;
+    res.status(statusCode).send(message);
 })
 
 
