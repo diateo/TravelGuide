@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const Attraction = require('./models/attraction');
+const expressError = require('./utilities/ExpressError');
+const catchAsync = require('./utilities/catchAsync');
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
@@ -33,40 +35,44 @@ app.get('/', (req, res) => {
 })
 
 
-app.get('/attractions', async (req, res) => {
+app.get('/attractions', catchAsync(async (req, res) => {
     const attractions = await Attraction.find({});
     res.render('attractions/index',{attractions});
-})
+}))
 
 //this route needs to be before show so new will not be treated as id
 app.get('/attractions/new', (req, res) => {
     res.render('attractions/new');
 })
 
-app.post('/attractions', async (req, res) => {
+app.post('/attractions', catchAsync(async (req, res) => {
     const attraction = new Attraction(req.body.attraction);
     await attraction.save();
     res.redirect(`/attractions/${attraction._id}`)
-})
+}))
 
-app.get('/attractions/:id', async (req, res) => {
+app.get('/attractions/:id', catchAsync(async (req, res) => {
     const attraction = await Attraction.findById(req.params.id);
     res.render('attractions/show',{attraction});
-})
+}))
 
-app.get('/attractions/:id/edit', async (req, res) => {
+app.get('/attractions/:id/edit', catchAsync(async (req, res) => {
     const attraction = await Attraction.findById(req.params.id);
     res.render('attractions/edit',{attraction});
-})
+}))
 
-app.put('/attractions/:id', async (req, res) => {
+app.put('/attractions/:id', catchAsync(async (req, res) => {
     const attraction = await Attraction.findByIdAndUpdate(req.params.id, { ...req.body.attraction });
     res.redirect(`/attractions/${attraction._id}`);
-})
+}))
 
-app.delete('/attractions/:id', async (req, res) => {
+app.delete('/attractions/:id', catchAsync(async (req, res) => {
     await Attraction.findByIdAndDelete(req.params.id);
     res.redirect('/attractions')
+}))
+
+app.use((err, req, res, next)=> {
+    res.send('Something went wrong!!!')
 })
 
 
