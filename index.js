@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const joi = require('joi');
 const methodOverride = require('method-override');
 const Attraction = require('./models/attraction');
 const expressError = require('./utilities/ExpressError');
@@ -47,7 +48,21 @@ app.get('/attractions/new', (req, res) => {
 })
 
 app.post('/attractions', catchAsync(async (req, res) => {
-    if (!req.body.attraction) throw new ExpressError(400, 'Invalid data');
+    
+    const attractionSchema = joi.object({
+        attraction: joi.object({
+            name: joi.string().required(),
+            fee: joi.number().required().min(0),
+            location: joi.string().required(),
+            image: joi.string().required(),
+            description:joi.string().required()
+        }).required()
+    });
+    const {error} = attractionSchema.validate(req.body);
+    if (error) {
+        const finalMessage = error.details.map(msg => msg.message).join(',');
+        throw new ExpressError(400, finalMessage);
+    }
     const attraction = new Attraction(req.body.attraction);
     await attraction.save();
     res.redirect(`/attractions/${attraction._id}`)
