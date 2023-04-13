@@ -2,12 +2,11 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const joi = require('joi');
 const methodOverride = require('method-override');
 const Attraction = require('./models/attraction');
-const expressError = require('./utilities/ExpressError');
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
+const { attractionSchema } = require('./validationSchemas.js');
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
@@ -31,6 +30,17 @@ app.use(express.urlencoded({ extended: true }));
 //because the browser form doesn't support PUT/PATCH/DELETE
 app.use(methodOverride('_method'));
 
+//create midleware for the JOI validation schema 
+const attractionValidation = (req, res, next) => {
+    const {error} = attractionSchema.validate(req.body);
+    if (error) {
+        const finalMessage = error.details.map(msg => msg.message).join(',');
+        throw new ExpressError(400, finalMessage);
+    }
+    else {
+        next();
+    }
+}
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -47,22 +57,7 @@ app.get('/attractions/new', (req, res) => {
     res.render('attractions/new');
 })
 
-app.post('/attractions', catchAsync(async (req, res) => {
-    
-    const attractionSchema = joi.object({
-        attraction: joi.object({
-            name: joi.string().required(),
-            fee: joi.number().required().min(0),
-            location: joi.string().required(),
-            image: joi.string().required(),
-            description:joi.string().required()
-        }).required()
-    });
-    const {error} = attractionSchema.validate(req.body);
-    if (error) {
-        const finalMessage = error.details.map(msg => msg.message).join(',');
-        throw new ExpressError(400, finalMessage);
-    }
+app.post('/attractions', attractionValidation, catchAsync(async (req, res) => {
     const attraction = new Attraction(req.body.attraction);
     await attraction.save();
     res.redirect(`/attractions/${attraction._id}`)
@@ -78,7 +73,7 @@ app.get('/attractions/:id/edit', catchAsync(async (req, res) => {
     res.render('attractions/edit',{attraction});
 }))
 
-app.put('/attractions/:id', catchAsync(async (req, res) => {
+app.put('/attractions/:id',attractionValidation, catchAsync(async (req, res) => {
     const attraction = await Attraction.findByIdAndUpdate(req.params.id, { ...req.body.attraction });
     res.redirect(`/attractions/${attraction._id}`);
 }))
