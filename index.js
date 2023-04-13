@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const Attraction = require('./models/attraction');
+const Review = require('./models/review');
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
 const { attractionSchema } = require('./validationSchemas.js');
@@ -83,6 +84,15 @@ app.delete('/attractions/:id', catchAsync(async (req, res) => {
     res.redirect('/attractions')
 }))
 
+app.post('/attractions/:id/reviews', catchAsync(async (req, res) => {
+    const attraction = await Attraction.findById(req.params.id);
+    const review = new Review(req.body.review);
+    attraction.reviews.push(review);
+    await review.save();
+    await attraction.save();
+    res.redirect(`/attractions/${attraction._id}`);
+
+}))
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page not found'));

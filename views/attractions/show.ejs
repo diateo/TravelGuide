@@ -31,7 +31,7 @@
                 </div>
             </div>
             <h2>Please share your opinion :)</h2>
-            <form class="mb-3">
+            <form action="/attractions/<%= attraction._id%>/reviews" method="POST" class="mb-3">
                 <div class="mb-3">
                     <label class="form-label" for="text">Review</label>
                     <textarea class="form-control" name="review[text]" id="text" rows="10"></textarea>
