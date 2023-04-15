@@ -7,8 +7,7 @@ const Attraction = require('./models/attraction');
 const Review = require('./models/review');
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
-const { attractionSchema } = require('./validationSchemas.js');
-
+const { attractionSchema, reviewSchema } = require('./validationSchemas.js');
 
 mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
     .then(() => {
@@ -42,6 +41,18 @@ const attractionValidation = (req, res, next) => {
         next();
     }
 }
+
+const reviewValidation = (req, res, next) => {
+    const {error} = reviewSchema.validate(req.body);
+    if (error) {
+        const finalMessage = error.details.map(msg => msg.message).join(',');
+        throw new ExpressError(400, finalMessage);
+    }
+    else {
+        next();
+    }
+}
+
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -84,7 +95,7 @@ app.delete('/attractions/:id', catchAsync(async (req, res) => {
     res.redirect('/attractions')
 }))
 
-app.post('/attractions/:id/reviews', catchAsync(async (req, res) => {
+app.post('/attractions/:id/reviews', reviewValidation, catchAsync(async (req, res) => {
     const attraction = await Attraction.findById(req.params.id);
     const review = new Review(req.body.review);
     attraction.reviews.push(review);
