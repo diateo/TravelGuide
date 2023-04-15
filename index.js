@@ -76,7 +76,7 @@ app.post('/attractions', attractionValidation, catchAsync(async (req, res) => {
 }))
 
 app.get('/attractions/:id', catchAsync(async (req, res) => {
-    const attraction = await Attraction.findById(req.params.id);
+    const attraction = await Attraction.findById(req.params.id).populate('reviews');
     res.render('attractions/show',{attraction});
 }))
 
