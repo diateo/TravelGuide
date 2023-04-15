@@ -105,6 +105,13 @@ app.post('/attractions/:id/reviews', reviewValidation, catchAsync(async (req, re
 
 }))
 
+app.delete('/attractions/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Attraction.findByIdAndUpdate(id,{$pull: {reviews:reviewId}})
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/attractions/${id}`);
+}))
+
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page not found'));
 })
