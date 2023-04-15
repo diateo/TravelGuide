@@ -2,10 +2,7 @@
 
 
     <div class="row">
-        <div class="col-6 offset-3">
-            <h1>
-                <%=attraction.name%>
-            </h1>
+        <div class="col-6">
             <div class="card mb-3">
                 <img src="<%=attraction.image%>" class="card-img-top" alt="">
                 <div class="card-body">
@@ -30,6 +27,8 @@
                     </form>
                 </div>
             </div>
+        </div>
+        <div class="col-6">
             <h2>Please share your opinion :)</h2>
             <form action="/attractions/<%= attraction._id%>/reviews" method="POST" class="mb-3 requires-validation"
                 novalidate>
@@ -46,5 +45,17 @@
                 </div>
                 <button class="btn btn-success">Submit</button>
             </form>
+            <% for(let review of attraction.reviews){%>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Rating: <%= review.rating%>
+                        </h5>
+                        <p class="card-text">
+                            Review: <%= review.text%>
+                        </p>
+                    </div>
+                </div>
+                <%}%>
         </div>
     </div>
