@@ -31,10 +31,14 @@
                 </div>
             </div>
             <h2>Please share your opinion :)</h2>
-            <form action="/attractions/<%= attraction._id%>/reviews" method="POST" class="mb-3">
+            <form action="/attractions/<%= attraction._id%>/reviews" method="POST" class="mb-3 requires-validation"
+                novalidate>
                 <div class="mb-3">
                     <label class="form-label" for="text">Review</label>
-                    <textarea class="form-control" name="review[text]" id="text" rows="10"></textarea>
+                    <textarea class="form-control" name="review[text]" id="text" rows="10" required></textarea>
+                    <div class="valid-feedback">
+                        Nice!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="rating">Rating</label>
