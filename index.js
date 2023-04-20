@@ -26,7 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 //because the browser form doesn't support PUT/PATCH/DELETE
 app.use(methodOverride('_method'));
-
+app.use(express.static(path.join(__dirname,'public')));
 
 app.use('/attractions', attractions);
 app.use('/attractions/:id/reviews', reviews);
