@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
+const session = require('express-session');
 const ExpressError = require('./utilities/ExpressError');
 const attractions = require('./routes/attractions');
 const reviews=require('./routes/reviews');
@@ -26,7 +27,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 //because the browser form doesn't support PUT/PATCH/DELETE
 app.use(methodOverride('_method'));
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname, 'public')));
+
+const sessionConfiguration = {
+
+    secret: 'temporarysecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly:true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+};
+
+app.use(session(sessionConfiguration))
 
 app.use('/attractions', attractions);
 app.use('/attractions/:id/reviews', reviews);
