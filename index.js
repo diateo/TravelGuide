@@ -3,14 +3,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
-const Attraction = require('./models/attraction');
-const Review = require('./models/review');
-const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
-const {reviewSchema } = require('./validationSchemas.js');
-
 const attractions = require('./routes/attractions');
-
+const reviews=require('./routes/reviews');
 
 mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
     .then(() => {
@@ -21,7 +16,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
         console.log(error)
 })
  
-
 const app = express();
 
 app.engine('ejs', ejsMate);
@@ -34,41 +28,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 
-
-const reviewValidation = (req, res, next) => {
-    const {error} = reviewSchema.validate(req.body);
-    if (error) {
-        const finalMessage = error.details.map(msg => msg.message).join(',');
-        throw new ExpressError(400, finalMessage);
-    }
-    else {
-        next();
-    }
-}
-
 app.use('/attractions', attractions);
+app.use('/attractions/:id/reviews', reviews);
+
 
 app.get('/', (req, res) => {
     res.render('home');
 })
-
-
-app.post('/attractions/:id/reviews', reviewValidation, catchAsync(async (req, res) => {
-    const attraction = await Attraction.findById(req.params.id);
-    const review = new Review(req.body.review);
-    attraction.reviews.push(review);
-    await review.save();
-    await attraction.save();
-    res.redirect(`/attractions/${attraction._id}`);
-
-}))
-
-app.delete('/attractions/:id/reviews/:reviewId', catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await Attraction.findByIdAndUpdate(id,{$pull: {reviews:reviewId}})
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/attractions/${id}`);
-}))
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page not found'));
@@ -79,7 +45,6 @@ app.use((err, req, res, next) => {
     if (!err.message) err.message = 'Something went wrong';
     res.status(statusCode).render('error',{err});
 })
-
 
 app.listen(3000, () => {
     console.log('Serving on port 3000');
