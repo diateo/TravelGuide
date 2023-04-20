@@ -7,7 +7,10 @@ const Attraction = require('./models/attraction');
 const Review = require('./models/review');
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
-const { attractionSchema, reviewSchema } = require('./validationSchemas.js');
+const {reviewSchema } = require('./validationSchemas.js');
+
+const attractions = require('./routes/attractions');
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
     .then(() => {
@@ -30,17 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 //because the browser form doesn't support PUT/PATCH/DELETE
 app.use(methodOverride('_method'));
 
-//create midleware for the JOI validation schema 
-const attractionValidation = (req, res, next) => {
-    const {error} = attractionSchema.validate(req.body);
-    if (error) {
-        const finalMessage = error.details.map(msg => msg.message).join(',');
-        throw new ExpressError(400, finalMessage);
-    }
-    else {
-        next();
-    }
-}
+
 
 const reviewValidation = (req, res, next) => {
     const {error} = reviewSchema.validate(req.body);
@@ -53,47 +46,12 @@ const reviewValidation = (req, res, next) => {
     }
 }
 
+app.use('/attractions', attractions);
 
 app.get('/', (req, res) => {
     res.render('home');
 })
 
-
-app.get('/attractions', catchAsync(async (req, res) => {
-    const attractions = await Attraction.find({});
-    res.render('attractions/index',{attractions});
-}))
-
-//this route needs to be before show so new will not be treated as id
-app.get('/attractions/new', (req, res) => {
-    res.render('attractions/new');
-})
-
-app.post('/attractions', attractionValidation, catchAsync(async (req, res) => {
-    const attraction = new Attraction(req.body.attraction);
-    await attraction.save();
-    res.redirect(`/attractions/${attraction._id}`)
-}))
-
-app.get('/attractions/:id', catchAsync(async (req, res) => {
-    const attraction = await Attraction.findById(req.params.id).populate('reviews');
-    res.render('attractions/show',{attraction});
-}))
-
-app.get('/attractions/:id/edit', catchAsync(async (req, res) => {
-    const attraction = await Attraction.findById(req.params.id);
-    res.render('attractions/edit',{attraction});
-}))
-
-app.put('/attractions/:id',attractionValidation, catchAsync(async (req, res) => {
-    const attraction = await Attraction.findByIdAndUpdate(req.params.id, { ...req.body.attraction });
-    res.redirect(`/attractions/${attraction._id}`);
-}))
-
-app.delete('/attractions/:id', catchAsync(async (req, res) => {
-    await Attraction.findByIdAndDelete(req.params.id);
-    res.redirect('/attractions')
-}))
 
 app.post('/attractions/:id/reviews', reviewValidation, catchAsync(async (req, res) => {
     const attraction = await Attraction.findById(req.params.id);
