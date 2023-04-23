@@ -47,11 +47,13 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
 
 router.put('/:id',attractionValidation, catchAsync(async (req, res) => {
     const attraction = await Attraction.findByIdAndUpdate(req.params.id, { ...req.body.attraction });
+    req.flash('success','You have successfully update the attraction');
     res.redirect(`/attractions/${attraction._id}`);
 }))
 
 router.delete('/:id', catchAsync(async (req, res) => {
     await Attraction.findByIdAndDelete(req.params.id);
+    req.flash('success', 'You have successfully deleted this attraction');
     res.redirect('/attractions')
 }))
 
