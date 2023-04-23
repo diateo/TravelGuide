@@ -37,11 +37,19 @@ router.post('/', attractionValidation, catchAsync(async (req, res) => {
 
 router.get('/:id', catchAsync(async (req, res) => {
     const attraction = await Attraction.findById(req.params.id).populate('reviews');
+    if (!attraction) {
+        req.flash('error', 'Cannot find the attraction');
+        return res.redirect('/attractions');
+    }
     res.render('attractions/show',{attraction});
 }))
 
 router.get('/:id/edit', catchAsync(async (req, res) => {
     const attraction = await Attraction.findById(req.params.id);
+    if (!attraction) {
+        req.flash('error', 'Cannot find the attraction');
+        return res.redirect('/attractions');
+    }
     res.render('attractions/edit',{attraction});
 }))
 
