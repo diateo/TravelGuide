@@ -4,9 +4,11 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const session = require('express-session');
+const flash = require('connect-flash');
 const ExpressError = require('./utilities/ExpressError');
 const attractions = require('./routes/attractions');
-const reviews=require('./routes/reviews');
+const reviews = require('./routes/reviews');
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
     .then(() => {
@@ -42,6 +44,13 @@ const sessionConfiguration = {
 };
 
 app.use(session(sessionConfiguration))
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 app.use('/attractions', attractions);
 app.use('/attractions/:id/reviews', reviews);

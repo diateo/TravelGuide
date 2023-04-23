@@ -31,6 +31,7 @@ router.get('/new', (req, res) => {
 router.post('/', attractionValidation, catchAsync(async (req, res) => {
     const attraction = new Attraction(req.body.attraction);
     await attraction.save();
+    req.flash('success', 'You successfully created an attraction!YAY');
     res.redirect(`/attractions/${attraction._id}`)
 }))
 
