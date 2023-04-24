@@ -8,6 +8,10 @@ const flash = require('connect-flash');
 const ExpressError = require('./utilities/ExpressError');
 const attractions = require('./routes/attractions');
 const reviews = require('./routes/reviews');
+const user = require('./models/user');
+
+const passport = require('passport');
+const localStrategy = require('passport-local');
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
@@ -45,6 +49,13 @@ const sessionConfiguration = {
 
 app.use(session(sessionConfiguration))
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(user.authenticate()))
+
+passport.serializeUser(user.serializeUser());
+passport.deserializeUser(user.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
