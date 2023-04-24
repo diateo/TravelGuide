@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({mergeParams:true});
 const catchAsync = require('../utilities/catchAsync');
-const { reviewSchema } = require('../validationSchemas.js');
+const { reviewSchema } = require('../validationSchemas');
 const ExpressError = require('../utilities/ExpressError');
 const Review = require('../models/review');
 const Attraction = require('../models/attraction');
