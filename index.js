@@ -8,7 +8,9 @@ const flash = require('connect-flash');
 const ExpressError = require('./utilities/ExpressError');
 const attractions = require('./routes/attractions');
 const reviews = require('./routes/reviews');
-const user = require('./models/user');
+const users = require('./routes/users');
+
+const User = require('./models/user');
 
 const passport = require('passport');
 const localStrategy = require('passport-local');
@@ -52,19 +54,22 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new localStrategy(user.authenticate()))
+passport.use(new localStrategy(User.authenticate()))
 
-passport.serializeUser(user.serializeUser());
-passport.deserializeUser(user.deserializeUser());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
+//midleware to flash messages
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
 
+//routes
 app.use('/attractions', attractions);
 app.use('/attractions/:id/reviews', reviews);
+app.use('/', users);
 
 
 app.get('/', (req, res) => {
@@ -75,6 +80,7 @@ app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page not found'));
 })
 
+//error handler 
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
     if (!err.message) err.message = 'Something went wrong';
