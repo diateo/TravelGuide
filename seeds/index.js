@@ -21,6 +21,7 @@ const populateDB = async () => {
         const randomCity = Math.floor(Math.random() * 800);
         const fee = Math.floor(Math.random() * 30) + 10;
         const attraction = new Attraction({
+            owner: '6447b4542ff992a202b04df7',
             location: `${cities[randomCity].city}, ${cities[randomCity].county}`,
             name: `${randomSeed(adjectives)} ${randomSeed(places)}`,
             image: 'https://source.unsplash.com/collection/1376658',
