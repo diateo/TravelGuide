@@ -1,29 +1,14 @@
 const express = require('express');
-const router = express.Router({mergeParams:true});
+const router = express.Router({ mergeParams: true });
+const reviews = require('../controllers/reviews');
 const catchAsync = require('../utilities/catchAsync');
 const Review = require('../models/review');
 const Attraction = require('../models/attraction');
 const {reviewValidation, isLoggedIn, isReviewAuthor} = require('../midleware');
 
 
-router.post('/',isLoggedIn, reviewValidation, catchAsync(async (req, res) => {
-    const attraction = await Attraction.findById(req.params.id);
-    const review = new Review(req.body.review);
-    review.author = req.user._id;
-    attraction.reviews.push(review);
-    await review.save();
-    await attraction.save();
-    req.flash('success', 'You have successfully created a new review');
-    res.redirect(`/attractions/${attraction._id}`);
+router.post('/', isLoggedIn, reviewValidation, catchAsync(reviews.createReview));
 
-}))
-
-router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await Attraction.findByIdAndUpdate(id,{$pull: {reviews:reviewId}})
-    await Review.findByIdAndDelete(reviewId);
-    req.flash('success', 'You have successfully deleted this review');
-    res.redirect(`/attractions/${id}`);
-}))
+router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(reviews.deleteReview));
 
 module.exports = router;
