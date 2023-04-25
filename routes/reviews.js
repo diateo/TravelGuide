@@ -3,12 +3,13 @@ const router = express.Router({mergeParams:true});
 const catchAsync = require('../utilities/catchAsync');
 const Review = require('../models/review');
 const Attraction = require('../models/attraction');
-const {reviewValidation} = require('../midleware');
+const {reviewValidation, isLoggedIn} = require('../midleware');
 
 
-router.post('/', reviewValidation, catchAsync(async (req, res) => {
+router.post('/',isLoggedIn, reviewValidation, catchAsync(async (req, res) => {
     const attraction = await Attraction.findById(req.params.id);
     const review = new Review(req.body.review);
+    review.author = req.user._id;
     attraction.reviews.push(review);
     await review.save();
     await attraction.save();
