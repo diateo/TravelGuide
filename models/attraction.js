@@ -8,6 +8,10 @@ const AttractionSchema = new Schema({
     image: String,
     location: String,
     description: String,
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref:'User'
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,
