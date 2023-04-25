@@ -34,37 +34,39 @@
             </div>
         </div>
         <div class="col-6">
-            <h2>Please share your opinion :)</h2>
-            <form action="/attractions/<%= attraction._id%>/reviews" method="POST" class="mb-3 requires-validation"
-                novalidate>
-                <div class="mb-3">
-                    <label class="form-label" for="text">Review</label>
-                    <textarea class="form-control" name="review[text]" id="text" rows="10" required></textarea>
-                    <div class="valid-feedback">
-                        Nice!
+            <% if(currentUser){ %>
+                <h2>Please share your opinion :)</h2>
+                <form action="/attractions/<%= attraction._id%>/reviews" method="POST" class="mb-3 requires-validation"
+                    novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" for="text">Review</label>
+                        <textarea class="form-control" name="review[text]" id="text" rows="10" required></textarea>
+                        <div class="valid-feedback">
+                            Nice!
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="rating">Rating</label>
-                    <input type="range" class="form-range" name="review[rating]" id="rating" min="1" max="5">
-                </div>
-                <button class="btn btn-success">Submit</button>
-            </form>
-            <% for(let review of attraction.reviews){%>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Rating: <%= review.rating%>
-                        </h5>
-                        <p class="card-text">
-                            Review: <%= review.text%>
-                        </p>
-                        <form action="/attractions/<%=attraction._id%>/reviews/<%=review._id%>?_method=DELETE"
-                            method="POST">
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                        </form>
+                    <div class="mb-3">
+                        <label class="form-label" for="rating">Rating</label>
+                        <input type="range" class="form-range" name="review[rating]" id="rating" min="1" max="5">
                     </div>
-                </div>
+                    <button class="btn btn-success">Submit</button>
+                </form>
                 <%}%>
+                    <% for(let review of attraction.reviews){%>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Rating: <%= review.rating%>
+                                </h5>
+                                <p class="card-text">
+                                    Review: <%= review.text%>
+                                </p>
+                                <form action="/attractions/<%=attraction._id%>/reviews/<%=review._id%>?_method=DELETE"
+                                    method="POST">
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        <%}%>
         </div>
     </div>
