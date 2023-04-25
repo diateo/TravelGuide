@@ -37,7 +37,7 @@ router.post('/', isLoggedIn, attractionValidation, catchAsync(async (req, res) =
 }))
 
 router.get('/:id', catchAsync(async (req, res) => {
-    const attraction = await Attraction.findById(req.params.id).populate('reviews');
+    const attraction = await Attraction.findById(req.params.id).populate('reviews').populate('owner');
     if (!attraction) {
         req.flash('error', 'Cannot find the attraction');
         return res.redirect('/attractions');
