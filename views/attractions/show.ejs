@@ -23,12 +23,14 @@
                         Created by: <%=attraction.owner.username%>
                     </li>
                 </ul>
-                <div class="card-body">
-                    <a href="/attractions/<%=attraction._id%>/edit" class="card-link btn btn-primary">Edit</a>
-                    <form class="d-inline" action="/attractions/<%=attraction._id%>?_method=DELETE" method="POST">
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
+                <% if(currentUser && attraction.owner.equals(currentUser._id)) {%>
+                    <div class="card-body">
+                        <a href="/attractions/<%=attraction._id%>/edit" class="card-link btn btn-primary">Edit</a>
+                        <form class="d-inline" action="/attractions/<%=attraction._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    <%}%>
             </div>
         </div>
         <div class="col-6">
