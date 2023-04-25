@@ -31,6 +31,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 
 router.post('/', isLoggedIn, attractionValidation, catchAsync(async (req, res) => {
     const attraction = new Attraction(req.body.attraction);
+    attraction.owner = req.user._id;
     await attraction.save();
     req.flash('success', 'You successfully created an attraction!YAY');
     res.redirect(`/attractions/${attraction._id}`)
