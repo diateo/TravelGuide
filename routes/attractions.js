@@ -4,14 +4,15 @@ const attractions = require('../controllers/attractions');
 const catchAsync = require('../utilities/catchAsync');
 const { isLoggedIn, attractionValidation, isOwner } = require('../midleware');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads' });
+const { storage } = require('../cloudinary');
+const upload = multer({storage});
 
 
 router.route('/')
     .get(catchAsync(attractions.index))
 // .post(isLoggedIn, attractionValidation, catchAsync(attractions.createAttraction))
-    .post(upload.single('image'),(req, res)=> {
-        console.log(req.body, req.file);
+    .post(upload.array('image'),(req, res)=> {
+        console.log(req.body, req.files);
         res.send('it worked ');
     })
 
