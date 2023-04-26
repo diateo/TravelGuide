@@ -5,7 +5,12 @@ const Review = require('./review');
 const AttractionSchema = new Schema({
     name: String,
     fee: Number,
-    image: String,
+    images: [
+        {
+            url: String,
+            filename:String
+        }
+    ],
     location: String,
     description: String,
     owner: {
