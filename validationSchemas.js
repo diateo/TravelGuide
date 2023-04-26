@@ -5,7 +5,7 @@ module.exports.attractionSchema = joi.object({
         name: joi.string().required(),
         fee: joi.number().required().min(0),
         location: joi.string().required(),
-        image: joi.string().required(),
+       // image: joi.string().required(),
         description:joi.string().required()
     }).required()
 });

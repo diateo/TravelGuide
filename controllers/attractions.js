@@ -9,10 +9,12 @@ module.exports.newForm=(req, res) => {
     res.render('attractions/new');
 }
 
-module.exports.createAttraction=(async (req, res) => {
+module.exports.createAttraction = (async (req, res) => {
     const attraction = new Attraction(req.body.attraction);
+    attraction.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
     attraction.owner = req.user._id;
     await attraction.save();
+    console.log(attraction)
     req.flash('success', 'You successfully created an attraction!YAY');
     res.redirect(`/attractions/${attraction._id}`)
 })

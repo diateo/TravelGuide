@@ -4,33 +4,37 @@
     <div class="row">
         <div class="col-6">
             <div class="card mb-3">
-                <img src="<%=attraction.image%>" class="card-img-top" alt="">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <%=attraction.name%>
-                    </h5>
-                    <p class="card-text">
-                        <%=attraction.description%>
-                    </p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-muted">
-                        <%=attraction.location%>
-                    </li>
-                    <li class="list-group-item">Entrance fee: <%=attraction.fee%> lei
-                    </li>
-                    <li class="list-group-item">
-                        Created by: <%=attraction.owner.username%>
-                    </li>
-                </ul>
-                <% if(currentUser && attraction.owner.equals(currentUser._id)) {%>
-                    <div class="card-body">
-                        <a href="/attractions/<%=attraction._id%>/edit" class="card-link btn btn-primary">Edit</a>
-                        <form class="d-inline" action="/attractions/<%=attraction._id%>?_method=DELETE" method="POST">
-                            <button class="btn btn-danger">Delete</button>
-                        </form>
-                    </div>
+                <% for(let img of attraction.images){ %>
+                    <img src="<%=img.url%>" class="card-img-top" alt="">
                     <%}%>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%=attraction.name%>
+                            </h5>
+                            <p class="card-text">
+                                <%=attraction.description%>
+                            </p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-muted">
+                                <%=attraction.location%>
+                            </li>
+                            <li class="list-group-item">Entrance fee: <%=attraction.fee%> lei
+                            </li>
+                            <li class="list-group-item">
+                                Created by: <%=attraction.owner.username%>
+                            </li>
+                        </ul>
+                        <% if(currentUser && attraction.owner.equals(currentUser._id)) {%>
+                            <div class="card-body">
+                                <a href="/attractions/<%=attraction._id%>/edit"
+                                    class="card-link btn btn-primary">Edit</a>
+                                <form class="d-inline" action="/attractions/<%=attraction._id%>?_method=DELETE"
+                                    method="POST">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                            <%}%>
             </div>
         </div>
         <div class="col-6">

@@ -10,11 +10,8 @@ const upload = multer({storage});
 
 router.route('/')
     .get(catchAsync(attractions.index))
-// .post(isLoggedIn, attractionValidation, catchAsync(attractions.createAttraction))
-    .post(upload.array('image'),(req, res)=> {
-        console.log(req.body, req.files);
-        res.send('it worked ');
-    })
+    .post(isLoggedIn, upload.array('image'), attractionValidation, catchAsync(attractions.createAttraction))
+    
 
 router.get('/new', isLoggedIn, attractions.newForm);
 
