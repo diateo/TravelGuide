@@ -14,6 +14,7 @@ module.exports.createAttraction = (async (req, res) => {
     attraction.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
     attraction.owner = req.user._id;
     await attraction.save();
+    console.log(attraction)
     req.flash('success', 'You successfully created an attraction!YAY');
     res.redirect(`/attractions/${attraction._id}`)
 })
@@ -40,6 +41,9 @@ module.exports.editForm=(async (req, res) => {
 
 module.exports.updateAttraction=(async (req, res) => {
     const attraction = await Attraction.findByIdAndUpdate(req.params.id, { ...req.body.attraction });
+    const imgs = req.files.map(file => ({ url: file.path, filename: file.filename }));
+    attraction.images.push(...imgs);
+    await attraction.save();
     req.flash('success','You have successfully update the attraction');
     res.redirect(`/attractions/${attraction._id}`);
 })

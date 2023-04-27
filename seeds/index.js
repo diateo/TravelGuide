@@ -24,9 +24,26 @@ const populateDB = async () => {
             owner: '6447b4542ff992a202b04df7',
             location: `${cities[randomCity].city}, ${cities[randomCity].county}`,
             name: `${randomSeed(adjectives)} ${randomSeed(places)}`,
-            image: 'https://source.unsplash.com/collection/1376658',
             description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusamus vitae omnis officiis praesentium a consequuntur perspiciatis nesciunt officia hic non ipsum voluptatum saepe magnam necessitatibus suscipit doloribus quae, quaerat quos! Fugit impedit ipsam eveniet odio exercitationem inventore porro facilis temporibus! Praesentium, inventore autem error delectus, atque consequatur accusamus cupiditate obcaecati veritatis ullam aperiam nisi ratione, in odio iste quisquam soluta? Incidunt quia exercitationem est dolore totam?',
-            fee
+            fee,
+            images: [
+                {
+                    url: 'https://res.cloudinary.com/dylm9rjsl/image/upload/v1682597960/TravelGuide/dtymw6jkwcjxpwh2fzbv.jpg',
+                    filename: 'TravelGuide/dtymw6jkwcjxpwh2fzbv'
+                },
+                {
+                    url: 'https://res.cloudinary.com/dylm9rjsl/image/upload/v1682597955/TravelGuide/x8x0ukavstfokvttnrcb.jpg',
+                    filename: 'TravelGuide/x8x0ukavstfokvttnrcb'
+                },
+                {
+                    url: 'https://res.cloudinary.com/dylm9rjsl/image/upload/v1682597951/TravelGuide/ubpdzyaj9kbnjojjvsue.jpg',
+                    filename: 'TravelGuide/ubpdzyaj9kbnjojjvsue'
+                },
+                {
+                    url: 'https://res.cloudinary.com/dylm9rjsl/image/upload/v1682597942/TravelGuide/aios3xtjotc6uhmdcgpg.jpg',
+                    filename: 'TravelGuide/aios3xtjotc6uhmdcgpg'
+                }
+            ]
             
         });
         await attraction.save();

@@ -4,7 +4,7 @@
         <h1 class="text-center">Edit Attraction</h1>
         <div class="col-6 offset-3">
             <form action="/attractions/<%=attraction._id%>?_method=PUT" method="POST" novalidate
-                class="requires-validation">
+                enctype="multipart/form-data" class="requires-validation">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" name="attraction[name]" required
@@ -22,12 +22,8 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="image" class="form-label">Image URL</label>
-                    <input type="text" class="form-control" id="image" name="attraction[image]" required
-                        value="<%=attraction.image%>">
-                    <div class="valid-feedback">
-                        Nice!
-                    </div>
+                    <label for="image" class="form-label">Add more images</label>
+                    <input type="file" name="image" id="image" multiple>
                 </div>
                 <div class="mb-3">
                     <label for="fee" class="form-label">Fee</label>

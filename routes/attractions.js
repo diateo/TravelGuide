@@ -17,7 +17,7 @@ router.get('/new', isLoggedIn, attractions.newForm);
 
 router.route('/:id')
     .get(catchAsync(attractions.viewAttraction))
-    .put(isLoggedIn, isOwner, attractionValidation, catchAsync(attractions.updateAttraction))
+    .put(isLoggedIn, isOwner, upload.array('image'), attractionValidation, catchAsync(attractions.updateAttraction))
     .delete(isLoggedIn, isOwner, catchAsync(attractions.deleteAttraction))
 
 
