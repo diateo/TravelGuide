@@ -18,6 +18,17 @@ const AttractionSchema = new Schema({
     name: String,
     fee: Number,
     images: [ImageSchema],
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required:true
+        },
+        coordinates: {
+            type: [Number],
+            required:true
+        }
+    },
     location: String,
     description: String,
     owner: {
