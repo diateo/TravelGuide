@@ -7,7 +7,8 @@ module.exports.attractionSchema = joi.object({
         location: joi.string().required(),
        // image: joi.string().required(),
         description:joi.string().required()
-    }).required()
+    }).required(),
+    deleteImages:joi.array()
 });
 
 
