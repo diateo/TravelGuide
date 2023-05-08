@@ -8,4 +8,10 @@ const map = new mapboxgl.Map({
 
 new mapboxgl.Marker()
     .setLngLat(attraction.geometry.coordinates)
+    .setPopup(
+        new mapboxgl.Popup({ offset: 25 })
+            .setHTML(
+            `<h3>${attraction.name}</h3><p>${attraction.location}</p>`
+        )
+    )
     .addTo(map)
