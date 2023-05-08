@@ -1,8 +1,11 @@
 <% layout('layouts/boilerplate')%>
     <link rel="stylesheet" href="/stylesheets/starRating.css">
 
+
     <div class="row">
         <div class="col-6">
+            <div class="mb-3" id='map' style='width: 400px; height: 300px;'></div>
+
             <div id="attractionCarousel" class="carousel slide">
                 <div class="carousel-inner">
                     <% attraction.images.forEach((img,i)=>{ %>
@@ -109,3 +112,10 @@
                         <%}%>
         </div>
     </div>
+
+
+    <script>
+        const token = '<%- process.env.MAPBOX_TOKEN%>';
+        const attraction = <%- JSON.stringify(attraction) %>;
+    </script>
+    <script src="/scripts/showMap.js"></script>
