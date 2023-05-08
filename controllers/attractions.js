@@ -1,5 +1,8 @@
 const Attraction = require('../models/attraction');
 const { cloudinary } = require('../cloudinary');
+const mapBoxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mapBoxGeocoding({ accessToken: mapBoxToken });
 
 module.exports.index = async (req, res) => {
     const attractions = await Attraction.find({});
@@ -11,7 +14,12 @@ module.exports.newForm=(req, res) => {
 }
 
 module.exports.createAttraction = (async (req, res) => {
+    const data=await geocoder.forwardGeocode({
+        query: req.body.attraction.location,
+        limit:1
+    }).send()
     const attraction = new Attraction(req.body.attraction);
+    attraction.geometry=data.body.features[0].geometry;
     attraction.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
     attraction.owner = req.user._id;
     await attraction.save();
