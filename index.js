@@ -13,6 +13,7 @@ const ExpressError = require('./utilities/ExpressError');
 const attractions = require('./routes/attractions');
 const reviews = require('./routes/reviews');
 const users = require('./routes/users');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const User = require('./models/user');
 
@@ -40,6 +41,8 @@ app.use(express.urlencoded({ extended: true }));
 //because the browser form doesn't support PUT/PATCH/DELETE
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(mongoSanitize());
+
 
 const sessionConfiguration = {
 
