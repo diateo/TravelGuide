@@ -35,5 +35,6 @@
 
             <script>
                 const token = '<%- process.env.MAPBOX_TOKEN%>';
+                const attractions = {features: <%- JSON.stringify(attractions) %>};
             </script>
             <script src="/scripts/clusterMap.js"></script>
