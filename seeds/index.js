@@ -26,7 +26,7 @@ const populateDB = async () => {
             name: `${randomSeed(adjectives)} ${randomSeed(places)}`,
             description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusamus vitae omnis officiis praesentium a consequuntur perspiciatis nesciunt officia hic non ipsum voluptatum saepe magnam necessitatibus suscipit doloribus quae, quaerat quos! Fugit impedit ipsam eveniet odio exercitationem inventore porro facilis temporibus! Praesentium, inventore autem error delectus, atque consequatur accusamus cupiditate obcaecati veritatis ullam aperiam nisi ratione, in odio iste quisquam soluta? Incidunt quia exercitationem est dolore totam?',
             fee,
-            geometry: { type: 'Point', coordinates: [ 27.583614, 47.161534 ] },
+            geometry: { type: 'Point', coordinates: [ cities[randomCity].lng, cities[randomCity].lat ] },
             images: [
                 {
                     url: 'https://res.cloudinary.com/dylm9rjsl/image/upload/v1682597960/TravelGuide/dtymw6jkwcjxpwh2fzbv.jpg',
