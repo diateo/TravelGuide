@@ -17,7 +17,7 @@ const randomSeed = array => array[Math.floor(Math.random() * array.length)];
 
 const populateDB = async () => {
     await Attraction.deleteMany({});
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 200; i++) {
         const randomCity = Math.floor(Math.random() * 800);
         const fee = Math.floor(Math.random() * 30) + 10;
         const attraction = new Attraction({
