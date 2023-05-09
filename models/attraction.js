@@ -13,10 +13,13 @@ ImageSchema.virtual('thumbnail').get(function () {
     return this.url.replace('/upload', '/upload/w_200');
 });
 
+const opts = { toJSON: { virtuals: true } };
 
 const AttractionSchema = new Schema({
     name: String,
     fee: Number,
+    location: String,
+    description: String,
     images: [ImageSchema],
     geometry: {
         type: {
@@ -29,8 +32,6 @@ const AttractionSchema = new Schema({
             required:true
         }
     },
-    location: String,
-    description: String,
     owner: {
         type: Schema.Types.ObjectId,
         ref:'User'
@@ -41,7 +42,12 @@ const AttractionSchema = new Schema({
             ref:'Review'
         }
     ]
+},opts);
+
+AttractionSchema.virtual('properties.popupContent').get(function () {
+    return `<a href='/attractions/${this._id}'>${this.name}</a>`
 });
+
 
 AttractionSchema.post('findOneAndDelete', async function(document){
     if (document) {
