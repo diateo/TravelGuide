@@ -40,10 +40,7 @@ const populateDB = async () => {
                     url: 'https://res.cloudinary.com/dylm9rjsl/image/upload/v1682597951/TravelGuide/ubpdzyaj9kbnjojjvsue.jpg',
                     filename: 'TravelGuide/ubpdzyaj9kbnjojjvsue'
                 },
-                {
-                    url: 'https://res.cloudinary.com/dylm9rjsl/image/upload/v1682597942/TravelGuide/aios3xtjotc6uhmdcgpg.jpg',
-                    filename: 'TravelGuide/aios3xtjotc6uhmdcgpg'
-                }
+                
             ]
             
         });
