@@ -14,6 +14,7 @@ const attractions = require('./routes/attractions');
 const reviews = require('./routes/reviews');
 const users = require('./routes/users');
 const mongoSanitize = require('express-mongo-sanitize');
+const MongoStore = require('connect-mongo');
 
 const User = require('./models/user');
 
@@ -21,9 +22,9 @@ const passport = require('passport');
 const localStrategy = require('passport-local');
 
 //const atlasDbUrl = process.env.ATLAS_DB_URL;
+const dbUrl = 'mongodb://127.0.0.1:27017/travel-guide';
 
-
-mongoose.connect('mongodb://127.0.0.1:27017/travel-guide')
+mongoose.connect(dbUrl)
     .then(() => {
     console.log('CONNECTION OK')
     })
@@ -44,8 +45,20 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret!'
+    }
+});
+
+store.on('error', function (e) {
+    console.log('Session tore error',e)
+})
 
 const sessionConfiguration = {
+    store,
     name: 'blablabla',
     secret: 'temporarysecret',
     resave: false,
