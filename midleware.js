@@ -19,7 +19,7 @@ module.exports.storeReturnTo = (req, res, next) => {
     next();
 }
 
-//create midleware for the JOI validation schema 
+
 module.exports.attractionValidation = (req, res, next) => {
     const {error} = attractionSchema.validate(req.body);
     if (error) {
